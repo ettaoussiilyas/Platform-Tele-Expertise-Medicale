@@ -1,7 +1,7 @@
 package com.example.platform_tele_expertise_medicale.model;
 
 import com.example.platform_tele_expertise_medicale.model.enums.Priorite;
-import com.example.platform_tele_expertise_medicale.model.enums.StatutDemade;
+import com.example.platform_tele_expertise_medicale.model.enums.StatutDemande;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -38,7 +38,7 @@ public class DemandeExpertise {
     private Priorite priorite = Priorite.NORMALE;
 
     @Enumerated(EnumType.STRING)
-    private StatutDemade statut = StatutDemade.EN_ATTENTE;
+    private StatutDemande statut = StatutDemande.EN_ATTENTE;
 
     @Column(name = "date_creation")
     private LocalDateTime dateCreation;
@@ -78,8 +78,8 @@ public class DemandeExpertise {
     public Priorite getPriorite() { return priorite; }
     public void setPriorite(Priorite priorite) { this.priorite = priorite; }
 
-    public StatutDemade getStatut() { return statut; }
-    public void setStatut(StatutDemade statut) { this.statut = statut; }
+    public StatutDemande getStatut() { return statut; }
+    public void setStatut(StatutDemande statut) { this.statut = statut; }
 
     public LocalDateTime getDateCreation() { return dateCreation; }
     public void setDateCreation(LocalDateTime dateCreation) { this.dateCreation = dateCreation; }

@@ -2,12 +2,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>Télé-Expertise Médicale</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
-</h1>
+<h1>Système de Télé-Expertise Médicale</h1>
 <br/>
-<a href="hello-servlet">Hello Servlet</a>
+<a href="login">Se connecter</a> | 
+<a href="register">S'inscrire</a>
 </body>
 </html>

@@ -1,13 +1,15 @@
 package com.example.platform_tele_expertise_medicale.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 
 @Entity
-@Table(name = "utilisateur")
+@Table(name = "utilisateurs")
 public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +21,7 @@ public class Utilisateur {
     @Column(nullable = false, length = 100)
     private String prenom;
 
+    @Email(message = "Inccorect Email Format")
     @Column(nullable = false, unique = true, length = 150)
     private String email;
 
@@ -27,6 +30,10 @@ public class Utilisateur {
 
     @Column(length = 20)
     private String telephone;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     @ManyToOne
     @JoinColumn(name = "specialite_id")
@@ -95,6 +102,10 @@ public class Utilisateur {
         return telephone;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
     public Specialite getSpecialite() {
         return specialite;
     }
@@ -153,6 +164,10 @@ public class Utilisateur {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public void setSpecialite(Specialite specialite) {

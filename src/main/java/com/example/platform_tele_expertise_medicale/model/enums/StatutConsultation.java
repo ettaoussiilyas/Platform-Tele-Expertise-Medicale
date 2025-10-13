@@ -1,6 +1,6 @@
 package com.example.platform_tele_expertise_medicale.model.enums;
 
-public enum StatuConsultation {
+public enum StatutConsultation {
     PROGRAMMEE,
     EN_COURS,
     TERMINEE,

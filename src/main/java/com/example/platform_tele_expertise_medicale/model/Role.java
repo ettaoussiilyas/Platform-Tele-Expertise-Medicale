@@ -53,4 +53,5 @@ public class Role {
     public void setUtilisateurs(List<Utilisateur> utilisateurs) {
         this.utilisateurs = utilisateurs;
     }
+
 }

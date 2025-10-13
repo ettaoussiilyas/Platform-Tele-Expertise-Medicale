@@ -1,6 +1,8 @@
 package com.example.platform_tele_expertise_medicale.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ public class Specialite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "name must be not empty")
     @Column(name = "specialite_name", nullable = false, unique = true, length = 100)
     private String specialiteName;
 

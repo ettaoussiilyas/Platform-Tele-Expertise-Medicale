@@ -1,6 +1,6 @@
 package com.example.platform_tele_expertise_medicale.model;
 
-import com.example.platform_tele_expertise_medicale.model.enums.StatuConsultation;
+import com.example.platform_tele_expertise_medicale.model.enums.StatutConsultation;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -31,7 +31,7 @@ public class Consultation {
     private BigDecimal tarif;
 
     @Enumerated(EnumType.STRING)
-    private StatuConsultation statut = StatuConsultation.PROGRAMMEE;
+    private StatutConsultation statut = StatutConsultation.PROGRAMMEE;
 
     @Column(columnDefinition = "TEXT")
     private String notes;
@@ -73,8 +73,8 @@ public class Consultation {
     public BigDecimal getTarif() { return tarif; }
     public void setTarif(BigDecimal tarif) { this.tarif = tarif; }
 
-    public StatuConsultation getStatut() { return statut; }
-    public void setStatut(StatuConsultation statut) { this.statut = statut; }
+    public StatutConsultation getStatut() { return statut; }
+    public void setStatut(StatutConsultation statut) { this.statut = statut; }
 
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
