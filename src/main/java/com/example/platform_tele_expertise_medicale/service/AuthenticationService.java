@@ -7,6 +7,7 @@ import com.example.platform_tele_expertise_medicale.model.Role;
 import com.example.platform_tele_expertise_medicale.model.enums.RoleName;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Stateless
 public class AuthenticationService {
@@ -19,7 +20,7 @@ public class AuthenticationService {
     
     public Utilisateur authenticate(String email, String password) {
         Utilisateur user = utilisateurDAO.findByEmail(email);
-        if (user != null && user.getMotDePasse().equals(password)) {
+        if (user != null && BCrypt.checkpw(password, user.getMotDePasse())) {
             return user;
         }
         return null;
@@ -35,7 +36,7 @@ public class AuthenticationService {
         user.setNom(nom);
         user.setPrenom(prenom);
         user.setEmail(email);
-        user.setMotDePasse(password);
+        user.setMotDePasse(hashPassword(password));
         user.setTelephone(telephone);
         
         Role role = roleDAO.findByRoleName(roleName);
@@ -43,5 +44,9 @@ public class AuthenticationService {
         
         utilisateurDAO.save(user);
         return user;
+    }
+    
+    private String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }
