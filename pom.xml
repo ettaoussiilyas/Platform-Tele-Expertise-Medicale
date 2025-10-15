@@ -34,6 +34,20 @@
             <version>8.0.33</version>
         </dependency>
         
+        <!-- Hibernate Core -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.2.7.Final</version>
+        </dependency>
+        
+        <!-- BCrypt for password hashing -->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+        
         <!-- JSON Processing -->
         <dependency>
             <groupId>org.glassfish</groupId>
