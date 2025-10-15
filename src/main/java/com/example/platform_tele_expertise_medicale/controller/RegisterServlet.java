@@ -23,6 +23,16 @@ public class RegisterServlet extends HttpServlet {
     private RoleDAO roleDAO;
     
     @Override
+    public void init() throws ServletException {
+        if (utilisateurDAO == null) {
+            utilisateurDAO = new UtilisateurDAO();
+        }
+        if (roleDAO == null) {
+            roleDAO = new RoleDAO();
+        }
+    }
+    
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);

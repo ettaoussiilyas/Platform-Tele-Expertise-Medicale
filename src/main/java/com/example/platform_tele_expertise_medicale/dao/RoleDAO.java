@@ -14,6 +14,16 @@ public class RoleDAO implements BaseDAO<Role, Integer> {
     @PersistenceContext(unitName = "medicalPU")
     private EntityManager em;
     
+    public RoleDAO() {
+    }
+    
+    private EntityManager getEntityManager() {
+        if (em == null) {
+            return com.example.platform_tele_expertise_medicale.util.EntityManagerUtil.getEntityManager();
+        }
+        return em;
+    }
+    
     @Override
     public void save(Role role) {
         em.persist(role);
@@ -43,9 +53,14 @@ public class RoleDAO implements BaseDAO<Role, Integer> {
     }
     
     public Role findByRoleName(RoleName roleName) {
-        TypedQuery<Role> query = em.createQuery(
-            "SELECT r FROM Role r WHERE r.roleName = :roleName", Role.class);
-        query.setParameter("roleName", roleName);
-        return query.getResultStream().findFirst().orElse(null);
+        EntityManager entityManager = getEntityManager();
+        try {
+            TypedQuery<Role> query = entityManager.createQuery(
+                "SELECT r FROM Role r WHERE r.roleName = :roleName", Role.class);
+            query.setParameter("roleName", roleName);
+            return query.getResultStream().findFirst().orElse(null);
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
 }

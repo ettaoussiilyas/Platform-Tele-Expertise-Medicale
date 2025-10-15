@@ -18,6 +18,13 @@ public class LoginServlet extends HttpServlet {
     private UtilisateurDAO utilisateurDAO;
     
     @Override
+    public void init() throws ServletException {
+        if (utilisateurDAO == null) {
+            utilisateurDAO = new UtilisateurDAO();
+        }
+    }
+    
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);

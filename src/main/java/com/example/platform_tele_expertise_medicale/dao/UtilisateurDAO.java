@@ -14,9 +14,30 @@ public class UtilisateurDAO implements BaseDAO<Utilisateur, Long> {
     @PersistenceContext(unitName = "medicalPU")
     private EntityManager em;
     
+    public UtilisateurDAO() {
+        // Default constructor for manual instantiation
+    }
+    
+    private EntityManager getEntityManager() {
+        if (em == null) {
+            return com.example.platform_tele_expertise_medicale.util.EntityManagerUtil.getEntityManager();
+        }
+        return em;
+    }
+    
     @Override
     public void save(Utilisateur utilisateur) {
-        em.persist(utilisateur);
+        EntityManager entityManager = getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.persist(utilisateur);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override
@@ -43,10 +64,15 @@ public class UtilisateurDAO implements BaseDAO<Utilisateur, Long> {
     }
     
     public Utilisateur findByEmail(String email) {
-        TypedQuery<Utilisateur> query = em.createQuery(
-            "SELECT u FROM Utilisateur u WHERE u.email = :email", Utilisateur.class);
-        query.setParameter("email", email);
-        return query.getResultStream().findFirst().orElse(null);
+        EntityManager entityManager = getEntityManager();
+        try {
+            TypedQuery<Utilisateur> query = entityManager.createQuery(
+                "SELECT u FROM Utilisateur u WHERE u.email = :email", Utilisateur.class);
+            query.setParameter("email", email);
+            return query.getResultStream().findFirst().orElse(null);
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     public List<Utilisateur> findByRole(RoleName roleName) {
