@@ -4,5 +4,5 @@ public enum RoleName {
     INFIRMIER,
     GENERALISTE,
     SPECIALISTE,
-    ADMINE
+    ADMIN
 }
