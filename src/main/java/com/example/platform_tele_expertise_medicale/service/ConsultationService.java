@@ -81,7 +81,7 @@ public class ConsultationService {
             return BigDecimal.ZERO;
         }
         
-        BigDecimal total = consultation.getTarif(); // Base consultation cost
+        BigDecimal total = consultation.getTarif();
         
         if (consultation.getDemandesExpertises() != null) {
             BigDecimal specialistCost = consultation.getDemandesExpertises()

@@ -27,7 +27,6 @@ public class AuthenticationService {
     
     public Utilisateur registerUser(String nom, String prenom, String email, String password, 
                                    String telephone, RoleName roleName) {
-        // Check if email exists
         if (utilisateurDAO.findByEmail(email) != null) {
             throw new RuntimeException("Email déjà utilisé");
         }
