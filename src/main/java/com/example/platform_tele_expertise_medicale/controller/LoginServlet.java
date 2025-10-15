@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
         try {
             Utilisateur user = utilisateurDAO.findByEmail(email);
             
-            if (user != null && user.getMotDePasse().equals(password)) {
+            if (user != null && org.mindrot.jbcrypt.BCrypt.checkpw(password, user.getMotDePasse())) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
                 session.setAttribute("userRole", user.getRole().getRoleName());

@@ -57,7 +57,7 @@ public class RegisterServlet extends HttpServlet {
             newUser.setNom(nom);
             newUser.setPrenom(prenom);
             newUser.setEmail(email);
-            newUser.setMotDePasse(password);
+            newUser.setMotDePasse(org.mindrot.jbcrypt.BCrypt.hashpw(password, org.mindrot.jbcrypt.BCrypt.gensalt()));
             newUser.setTelephone(telephone);
             RoleName roleName = RoleName.valueOf(roleParam);
             Role role = roleDAO.findByRoleName(roleName);
