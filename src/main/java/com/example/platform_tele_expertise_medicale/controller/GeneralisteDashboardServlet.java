@@ -28,6 +28,6 @@ public class GeneralisteDashboardServlet extends HttpServlet {
             return;
         }
         
-        request.getRequestDispatcher("/WEB-INF/views/generaliste-dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/dashboard/generaliste-dashboard.jsp").forward(request, response);
     }
 }

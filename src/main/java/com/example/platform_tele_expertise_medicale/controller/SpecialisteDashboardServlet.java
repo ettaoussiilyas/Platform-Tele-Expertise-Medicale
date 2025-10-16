@@ -28,6 +28,6 @@ public class SpecialisteDashboardServlet extends HttpServlet {
             return;
         }
         
-        request.getRequestDispatcher("/WEB-INF/views/specialiste-dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/dashboard/specialiste-dashboard.jsp").forward(request, response);
     }
 }

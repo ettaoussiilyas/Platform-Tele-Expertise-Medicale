@@ -28,6 +28,6 @@ public class InfirmierDashboardServlet extends HttpServlet {
             return;
         }
         
-        request.getRequestDispatcher("/WEB-INF/views/infirmier-dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/dashboard/infirmier-dashboard.jsp").forward(request, response);
     }
 }
