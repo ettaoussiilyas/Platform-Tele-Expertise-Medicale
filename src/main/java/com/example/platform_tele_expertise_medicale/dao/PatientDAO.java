@@ -14,9 +14,30 @@ public class PatientDAO implements BaseDAO<Patient, Long> {
     @PersistenceContext(unitName = "medicalPU")
     private EntityManager em;
     
+    public PatientDAO() {
+        // Default constructor for manual instantiation
+    }
+    
+    private EntityManager getEntityManager() {
+        if (em == null) {
+            return com.example.platform_tele_expertise_medicale.util.EntityManagerUtil.getEntityManager();
+        }
+        return em;
+    }
+    
     @Override
     public void save(Patient patient) {
-        em.persist(patient);
+        EntityManager entityManager = getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.persist(patient);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override
@@ -57,10 +78,38 @@ public class PatientDAO implements BaseDAO<Patient, Long> {
     }
     
     public List<Patient> searchByName(String nom, String prenom) {
-        TypedQuery<Patient> query = em.createQuery(
-            "SELECT p FROM Patient p WHERE p.nom LIKE :nom AND p.prenom LIKE :prenom", Patient.class);
-        query.setParameter("nom", "%" + nom + "%");
-        query.setParameter("prenom", "%" + prenom + "%");
-        return query.getResultList();
+        EntityManager entityManager = getEntityManager();
+        try {
+            TypedQuery<Patient> query = entityManager.createQuery(
+                "SELECT p FROM Patient p WHERE p.nom LIKE :nom AND p.prenom LIKE :prenom", Patient.class);
+            query.setParameter("nom", "%" + nom + "%");
+            query.setParameter("prenom", "%" + prenom + "%");
+            return query.getResultList();
+        } finally {
+            if (em == null) entityManager.close();
+        }
+    }
+    
+    public Patient findByEmail(String email) {
+        EntityManager entityManager = getEntityManager();
+        try {
+            TypedQuery<Patient> query = entityManager.createQuery(
+                "SELECT p FROM Patient p WHERE p.email = :email", Patient.class);
+            query.setParameter("email", email);
+            return query.getResultStream().findFirst().orElse(null);
+        } finally {
+            if (em == null) entityManager.close();
+        }
+    }
+    
+    public List<Patient> findPatientsOfToday() {
+        EntityManager entityManager = getEntityManager();
+        try {
+            TypedQuery<Patient> query = entityManager.createQuery(
+                "SELECT p FROM Patient p WHERE DATE(p.createdAt) = CURRENT_DATE ORDER BY p.createdAt", Patient.class);
+            return query.getResultList();
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
 }
