@@ -40,25 +40,26 @@
             <div class="action-card">
                 <h3>📋 Accueil Patient</h3>
                 <p>Enregistrer un nouveau patient ou rechercher un patient existant. Saisir les données administratives et médicales.</p>
-                <a href="#" class="btn">Gérer Patients</a>
+                <a href="${pageContext.request.contextPath}/patient/register" class="btn">Nouveau Patient</a>
+                <a href="${pageContext.request.contextPath}/patient/search" class="btn" style="margin-left: 10px;">Rechercher</a>
             </div>
             
             <div class="action-card">
                 <h3>🩺 Signes Vitaux</h3>
                 <p>Saisir les signes vitaux : tension artérielle, fréquence cardiaque, température, fréquence respiratoire, poids/taille.</p>
-                <a href="#" class="btn">Saisir Signes Vitaux</a>
+                <a href="${pageContext.request.contextPath}/patient/register" class="btn">Saisir Signes Vitaux</a>
             </div>
             
             <div class="action-card">
                 <h3>📝 Liste des Patients</h3>
                 <p>Voir la liste des patients enregistrés du jour, triés par heure d'arrivée avec leurs informations.</p>
-                <a href="#" class="btn">Voir Liste Patients</a>
+                <a href="${pageContext.request.contextPath}/patient/list" class="btn">Voir Liste Patients</a>
             </div>
             
             <div class="action-card">
                 <h3>⏰ File d'Attente</h3>
                 <p>Gérer la file d'attente des patients pour les consultations avec les médecins généralistes.</p>
-                <a href="#" class="btn">Gérer File d'Attente</a>
+                <a href="${pageContext.request.contextPath}/patient/list" class="btn">Gérer File d'Attente</a>
             </div>
         </div>
     </div>
