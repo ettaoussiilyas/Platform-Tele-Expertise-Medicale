@@ -51,7 +51,8 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("user", user);
                 session.setAttribute("userRole", user.getRole().getRoleName());
 
-                response.sendRedirect(request.getContextPath() + "/dashboard");
+                String redirectUrl = getRedirectUrlByRole(user.getRole().getRoleName().toString());
+                response.sendRedirect(request.getContextPath() + redirectUrl);
             } else {
                 request.setAttribute("error", "Email ou mot de passe incorrect");
                 request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
@@ -59,6 +60,19 @@ public class LoginServlet extends HttpServlet {
         } catch (Exception e) {
             request.setAttribute("error", "Erreur de connexion: " + e.getMessage());
             request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+        }
+    }
+    
+    private String getRedirectUrlByRole(String role) {
+        switch (role) {
+            case "INFIRMIER":
+                return "/dashboard/infirmier";
+            case "GENERALISTE":
+                return "/dashboard/generaliste";
+            case "SPECIALISTE":
+                return "/dashboard/specialiste";
+            default:
+                return "/dashboard";
         }
     }
 }
