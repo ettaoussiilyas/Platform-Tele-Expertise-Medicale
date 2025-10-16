@@ -21,6 +21,6 @@ public class DashboardServlet extends HttpServlet {
             return;
         }
         
-        request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/dashboard/dashboard.jsp").forward(request, response);
     }
 }
