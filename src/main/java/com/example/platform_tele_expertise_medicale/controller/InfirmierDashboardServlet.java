@@ -21,8 +21,8 @@ public class InfirmierDashboardServlet extends HttpServlet {
             return;
         }
         
-        // Check if user has INFIRMIER role
-        String userRole = (String) session.getAttribute("userRole");
+        Object userRoleObj = session.getAttribute("userRole");
+        String userRole = userRoleObj != null ? userRoleObj.toString() : "";
         if (!"INFIRMIER".equals(userRole)) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;

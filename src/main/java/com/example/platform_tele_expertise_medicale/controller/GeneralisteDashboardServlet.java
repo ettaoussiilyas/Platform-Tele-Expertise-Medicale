@@ -21,7 +21,8 @@ public class GeneralisteDashboardServlet extends HttpServlet {
             return;
         }
         
-        String userRole = (String) session.getAttribute("userRole");
+        Object userRoleObj = session.getAttribute("userRole");
+        String userRole = userRoleObj != null ? userRoleObj.toString() : "";
         if (!"GENERALISTE".equals(userRole)) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;

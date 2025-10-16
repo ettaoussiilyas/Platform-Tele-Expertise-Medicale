@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(request, response);
     }
     
     @Override
@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
         
         if (email == null || password == null || email.trim().isEmpty() || password.trim().isEmpty()) {
             request.setAttribute("error", "Email et mot de passe requis");
-            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(request, response);
             return;
         }
         
@@ -55,11 +55,11 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + redirectUrl);
             } else {
                 request.setAttribute("error", "Email ou mot de passe incorrect");
-                request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(request, response);
             }
         } catch (Exception e) {
             request.setAttribute("error", "Erreur de connexion: " + e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(request, response);
         }
     }
     

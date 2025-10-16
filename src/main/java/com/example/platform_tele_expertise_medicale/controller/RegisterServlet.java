@@ -35,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(request, response);
     }
     
     @Override
@@ -52,14 +52,14 @@ public class RegisterServlet extends HttpServlet {
         if (nom == null || prenom == null || email == null || password == null || roleParam == null ||
             nom.trim().isEmpty() || prenom.trim().isEmpty() || email.trim().isEmpty() || password.trim().isEmpty()) {
             request.setAttribute("error", "Tous les champs obligatoires doivent être remplis");
-            request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(request, response);
             return;
         }
         
         try {
             if (utilisateurDAO.findByEmail(email) != null) {
                 request.setAttribute("error", "Cet email est déjà utilisé");
-                request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(request, response);
                 return;
             }
             
@@ -76,11 +76,11 @@ public class RegisterServlet extends HttpServlet {
             utilisateurDAO.save(newUser);
             
             request.setAttribute("success", "Inscription réussie! Vous pouvez maintenant vous connecter.");
-            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(request, response);
             
         } catch (Exception e) {
             request.setAttribute("error", "Erreur lors de l'inscription: " + e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(request, response);
         }
     }
 }
