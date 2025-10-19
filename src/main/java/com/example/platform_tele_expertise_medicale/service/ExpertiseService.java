@@ -28,30 +28,20 @@ public class ExpertiseService {
     @Inject
     private CreneauDisponibleDAO creneauDAO;
     
-    public DemandeExpertise requestExpertise(Long consultationId, Long generalisteId,
-                                           Integer specialiteId, String question, Priorite priorite) {
+    public DemandeExpertise createDemandeExpertise(Long consultationId, Long specialisteId, String question, Priorite priorite) {
         
         Consultation consultation = consultationDAO.findById(consultationId);
-        Utilisateur generaliste = utilisateurDAO.findById(generalisteId);
-        Specialite specialite = specialiteDAO.findById(specialiteId);
+        Utilisateur specialiste = utilisateurDAO.findById(specialisteId);
         
-        List<Utilisateur> specialists = utilisateurDAO.findSpecialistesBySpecialite(specialiteId)
-                .stream()
-                .filter(spec -> spec.getTarif() != null)
-                .sorted((s1, s2) -> s1.getTarif().compareTo(s2.getTarif()))
-                .collect(Collectors.toList());
-        
-        if (specialists.isEmpty()) {
-            throw new RuntimeException("Aucun spécialiste disponible pour cette spécialité");
+        if (consultation == null || specialiste == null) {
+            throw new RuntimeException("Consultation ou spécialiste introuvable");
         }
-        
-        Utilisateur specialiste = specialists.get(0);
         
         DemandeExpertise demande = new DemandeExpertise();
         demande.setConsultation(consultation);
-        demande.setGeneraliste(generaliste);
+        demande.setGeneraliste(consultation.getMedecin());
         demande.setSpecialiste(specialiste);
-        demande.setSpecialite(specialite);
+        demande.setSpecialite(specialiste.getSpecialite());
         demande.setQuestion(question);
         demande.setPriorite(priorite);
         demande.setStatut(StatutDemande.EN_ATTENTE);
@@ -60,19 +50,8 @@ public class ExpertiseService {
         return demande;
     }
     
-    public List<DemandeExpertise> getExpertiseRequestsForSpecialist(Long specialisteId,
-                                                                   StatutDemande statut, Priorite priorite) {
-        List<DemandeExpertise> requests = demandeExpertiseDAO.findBySpecialisteId(specialisteId);
-        
-        return requests.stream()
-                .filter(req -> statut == null || req.getStatut().equals(statut))
-                .filter(req -> priorite == null || req.getPriorite().equals(priorite))
-                .sorted((r1, r2) -> {
-                    int priorityCompare = r1.getPriorite().compareTo(r2.getPriorite());
-                    if (priorityCompare != 0) return priorityCompare;
-                    return r1.getDateCreation().compareTo(r2.getDateCreation());
-                })
-                .collect(Collectors.toList());
+    public List<DemandeExpertise> getDemandesForSpecialiste(Long specialisteId) {
+        return demandeExpertiseDAO.findBySpecialisteId(specialisteId);
     }
     
     public DemandeExpertise respondToExpertise(Long demandeId, String reponse) {
@@ -90,10 +69,7 @@ public class ExpertiseService {
         return creneauDAO.findAvailableByMedecinId(specialisteId);
     }
     
-    public List<Utilisateur> getSpecialistsBySpecialty(Integer specialiteId) {
-        return utilisateurDAO.findSpecialistesBySpecialite(specialiteId)
-                .stream()
-                .sorted((s1, s2) -> s1.getTarif().compareTo(s2.getTarif()))
-                .collect(Collectors.toList());
+    public List<DemandeExpertise> getDemandesByGeneraliste(Long generalisteId) {
+        return demandeExpertiseDAO.findByGeneralisteId(generalisteId);
     }
 }

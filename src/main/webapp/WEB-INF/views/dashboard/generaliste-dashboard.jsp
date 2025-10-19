@@ -41,25 +41,25 @@
             <div class="action-card">
                 <h3>👨‍⚕️ Créer Consultation</h3>
                 <p>Sélectionner un patient, saisir motif et observations. Coût consultation : 150 DH (fixe).</p>
-                <a href="#" class="btn">Nouvelle Consultation</a>
+                <a href="${pageContext.request.contextPath}/consultation/create" class="btn">Nouvelle Consultation</a>
             </div>
             
             <div class="action-card">
                 <h3>🔍 Demander Expertise</h3>
                 <p>Choisir spécialité, filtrer spécialistes par tarif, sélectionner créneaux et poser questions aux spécialistes.</p>
-                <a href="#" class="btn">Demander Expertise</a>
+                <a href="${pageContext.request.contextPath}/consultation/list" class="btn">Voir Consultations</a>
             </div>
             
             <div class="action-card">
                 <h3>💰 Calculer Coût Total</h3>
                 <p>Voir le coût total = consultation (150 DH) + tarif spécialiste + actes techniques.</p>
-                <a href="#" class="btn">Calculer Coût</a>
+                <a href="${pageContext.request.contextPath}/cost/calculator" class="btn">Calculer Coût</a>
             </div>
             
             <div class="action-card">
                 <h3>📋 Mes Consultations</h3>
                 <p>Voir toutes mes consultations en cours et terminées avec les patients.</p>
-                <a href="#" class="btn">Voir Consultations</a>
+                <a href="${pageContext.request.contextPath}/consultation/list" class="btn">Mes Consultations</a>
             </div>
         </div>
         

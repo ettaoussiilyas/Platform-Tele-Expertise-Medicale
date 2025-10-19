@@ -41,25 +41,25 @@
             <div class="action-card">
                 <h3>⚙️ Configurer Profil</h3>
                 <p>Définir tarif, spécialité et durée moyenne consultation (30 min fixe).</p>
-                <a href="#" class="btn">Configurer Profil</a>
+                <a href="${pageContext.request.contextPath}/specialist/profile" class="btn">Configurer Profil</a>
             </div>
             
             <div class="action-card">
                 <h3>📅 Gérer Créneaux</h3>
                 <p>Voir créneaux fixes de 30 min, gérer disponibilités et réservations automatiques.</p>
-                <a href="#" class="btn">Gérer Créneaux</a>
+                <a href="${pageContext.request.contextPath}/specialist/slots" class="btn">Gérer Créneaux</a>
             </div>
             
             <div class="action-card">
                 <h3>📨 Demandes d'Expertise</h3>
                 <p>Consulter demandes reçues, filtrer par statut et priorité, voir détails patients.</p>
-                <a href="#" class="btn">Voir Demandes</a>
+                <a href="${pageContext.request.contextPath}/expertise/list" class="btn">Voir Demandes</a>
             </div>
             
             <div class="action-card">
                 <h3>✍️ Répondre Expertise</h3>
                 <p>Saisir avis médical, recommandations et marquer demandes comme terminées.</p>
-                <a href="#" class="btn">Répondre Expertise</a>
+                <a href="${pageContext.request.contextPath}/expertise/list" class="btn">Répondre Expertise</a>
             </div>
         </div>
         
