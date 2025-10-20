@@ -19,8 +19,8 @@ public class EntityManagerUtil {
         return emf.createEntityManager();
     }
     
-    public static void close() {
-        if (emf != null) {
+    public static void closeEntityManagerFactory() {
+        if (emf != null && emf.isOpen()) {
             emf.close();
         }
     }

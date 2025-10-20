@@ -69,7 +69,7 @@ public class SpecialistProfileServlet extends HttpServlet {
         try {
             Utilisateur user = (Utilisateur) session.getAttribute("user");
             
-            Long specialiteId = Long.parseLong(request.getParameter("specialiteId"));
+            Integer specialiteId = Integer.parseInt(request.getParameter("specialiteId"));
             BigDecimal tarif = new BigDecimal(request.getParameter("tarif"));
             
             Specialite specialite = specialiteDAO.findById(specialiteId);
