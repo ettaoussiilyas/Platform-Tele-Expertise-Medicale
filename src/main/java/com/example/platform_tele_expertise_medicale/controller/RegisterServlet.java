@@ -30,6 +30,21 @@ public class RegisterServlet extends HttpServlet {
         if (roleDAO == null) {
             roleDAO = new RoleDAO();
         }
+        ensureRolesExist();
+    }
+    
+    private void ensureRolesExist() {
+        try {
+            for (RoleName roleName : RoleName.values()) {
+                Role existingRole = roleDAO.findByRoleName(roleName);
+                if (existingRole == null) {
+                    Role newRole = new Role(roleName);
+                    roleDAO.save(newRole);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     @Override
@@ -63,14 +78,21 @@ public class RegisterServlet extends HttpServlet {
                 return;
             }
             
+            RoleName roleName = RoleName.valueOf(roleParam);
+            Role role = roleDAO.findByRoleName(roleName);
+            
+            if (role == null) {
+                request.setAttribute("error", "Rôle non trouvé: " + roleParam);
+                request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(request, response);
+                return;
+            }
+            
             Utilisateur newUser = new Utilisateur();
             newUser.setNom(nom);
             newUser.setPrenom(prenom);
             newUser.setEmail(email);
             newUser.setMotDePasse(org.mindrot.jbcrypt.BCrypt.hashpw(password, org.mindrot.jbcrypt.BCrypt.gensalt()));
             newUser.setTelephone(telephone);
-            RoleName roleName = RoleName.valueOf(roleParam);
-            Role role = roleDAO.findByRoleName(roleName);
             newUser.setRole(role);
             
             utilisateurDAO.save(newUser);
@@ -79,8 +101,12 @@ public class RegisterServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(request, response);
             
         } catch (Exception e) {
+            e.printStackTrace();
             request.setAttribute("error", "Erreur lors de l'inscription: " + e.getMessage());
             request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(request, response);
         }
     }
 }
+
+// calcule de tarif
+// project : entity :

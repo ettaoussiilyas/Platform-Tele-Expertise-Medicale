@@ -42,7 +42,7 @@ public class Consultation {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "consultation")
+    @OneToMany(mappedBy = "consultation", fetch = FetchType.EAGER)
     private List<DemandeExpertise> demandesExpertises;
 
     @OneToMany(mappedBy = "consultation")

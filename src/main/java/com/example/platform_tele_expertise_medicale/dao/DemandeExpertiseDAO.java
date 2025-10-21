@@ -18,7 +18,11 @@ public class DemandeExpertiseDAO implements BaseDAO<DemandeExpertise, Long> {
     
     private EntityManager getEntityManager() {
         if (em == null) {
-            return EntityManagerUtil.getEntityManager();
+            try {
+                return EntityManagerUtil.getEntityManager();
+            } catch (Exception e) {
+                throw new RuntimeException("Cannot create EntityManager. Check database connection and persistence.xml: " + e.getMessage(), e);
+            }
         }
         return em;
     }
@@ -40,12 +44,22 @@ public class DemandeExpertiseDAO implements BaseDAO<DemandeExpertise, Long> {
     
     @Override
     public DemandeExpertise findById(Long id) {
-        return getEntityManager().find(DemandeExpertise.class, id);
+        EntityManager entityManager = getEntityManager();
+        try {
+            return entityManager.find(DemandeExpertise.class, id);
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override
     public List<DemandeExpertise> findAll() {
-        return getEntityManager().createQuery("SELECT d FROM DemandeExpertise d", DemandeExpertise.class).getResultList();
+        EntityManager entityManager = getEntityManager();
+        try {
+            return entityManager.createQuery("SELECT d FROM DemandeExpertise d", DemandeExpertise.class).getResultList();
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override

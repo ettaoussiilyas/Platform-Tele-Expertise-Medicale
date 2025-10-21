@@ -34,7 +34,7 @@ public class Patient {
     @Column(columnDefinition = "TEXT")
     private String adresse;
 
-    @Column(length = 10)
+    @Column(length = 20)
     private String tension;
 
     @Column(precision = 4, scale = 1)

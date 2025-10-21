@@ -141,7 +141,7 @@ public class ExpertiseServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             Long consultationId = Long.parseLong(request.getParameter("consultationId"));
-            Long specialiteId = Long.parseLong(request.getParameter("specialiteId"));
+            Integer specialiteId = Integer.parseInt(request.getParameter("specialiteId"));
             String question = request.getParameter("question");
             Priorite priorite = Priorite.valueOf(request.getParameter("priorite"));
             

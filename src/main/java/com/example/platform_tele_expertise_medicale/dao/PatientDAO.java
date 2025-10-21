@@ -20,7 +20,11 @@ public class PatientDAO implements BaseDAO<Patient, Long> {
     
     private EntityManager getEntityManager() {
         if (em == null) {
-            return com.example.platform_tele_expertise_medicale.util.EntityManagerUtil.getEntityManager();
+            try {
+                return com.example.platform_tele_expertise_medicale.util.EntityManagerUtil.getEntityManager();
+            } catch (Exception e) {
+                throw new RuntimeException("Cannot create EntityManager. Check database connection and persistence.xml: " + e.getMessage(), e);
+            }
         }
         return em;
     }
@@ -42,39 +46,79 @@ public class PatientDAO implements BaseDAO<Patient, Long> {
     
     @Override
     public Patient findById(Long id) {
-        return em.find(Patient.class, id);
+        EntityManager entityManager = getEntityManager();
+        try {
+            return entityManager.find(Patient.class, id);
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override
     public List<Patient> findAll() {
-        return em.createQuery("SELECT p FROM Patient p", Patient.class).getResultList();
+        EntityManager entityManager = getEntityManager();
+        try {
+            return entityManager.createQuery("SELECT p FROM Patient p", Patient.class).getResultList();
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override
     public void update(Patient patient) {
-        em.merge(patient);
+        EntityManager entityManager = getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.merge(patient);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override
     public void delete(Long id) {
-        Patient patient = findById(id);
-        if (patient != null) {
-            em.remove(patient);
+        EntityManager entityManager = getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            Patient patient = entityManager.find(Patient.class, id);
+            if (patient != null) {
+                entityManager.remove(patient);
+            }
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        } finally {
+            if (em == null) entityManager.close();
         }
     }
     
     public Patient findByNumeroSecuriteSociale(String numeroSS) {
-        TypedQuery<Patient> query = em.createQuery(
-            "SELECT p FROM Patient p WHERE p.numeroSecuriteSociale = :numeroSS", Patient.class);
-        query.setParameter("numeroSS", numeroSS);
-        return query.getResultStream().findFirst().orElse(null);
+        EntityManager entityManager = getEntityManager();
+        try {
+            TypedQuery<Patient> query = entityManager.createQuery(
+                "SELECT p FROM Patient p WHERE p.numeroSecuriteSociale = :numeroSS", Patient.class);
+            query.setParameter("numeroSS", numeroSS);
+            return query.getResultStream().findFirst().orElse(null);
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     public List<Patient> findPatientsOfDay(LocalDate date) {
-        TypedQuery<Patient> query = em.createQuery(
-            "SELECT p FROM Patient p WHERE DATE(p.createdAt) = :date ORDER BY p.createdAt", Patient.class);
-        query.setParameter("date", date);
-        return query.getResultList();
+        EntityManager entityManager = getEntityManager();
+        try {
+            TypedQuery<Patient> query = entityManager.createQuery(
+                "SELECT p FROM Patient p WHERE DATE(p.createdAt) = :date ORDER BY p.createdAt", Patient.class);
+            query.setParameter("date", date);
+            return query.getResultList();
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     public List<Patient> searchByName(String nom, String prenom) {

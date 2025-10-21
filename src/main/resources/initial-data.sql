@@ -6,7 +6,7 @@ INSERT INTO roles (role_name) VALUES
 ('ADMIN');
 
 -- Insert Specialties
-INSERT INTO specialites (specialite_name) VALUES
+INSERT INTO specialites (nom) VALUES
 ('CARDIOLOGIE'),
 ('DERMATOLOGIE'),
 ('NEUROLOGIE'),
@@ -15,6 +15,16 @@ INSERT INTO specialites (specialite_name) VALUES
 ('GYNECOLOGIE'),
 ('OPHTALMOLOGIE'),
 ('RADIOLOGIE');
+
+INSERT INTO actes_techniques (nom, description, tarif, duree_minutes) VALUES
+('Radiographie', 'Radiographie thoracique standard', 80.00, 15),
+('Échographie', 'Échographie abdominale complète', 120.00, 30),
+('IRM', 'Imagerie par résonance magnétique', 800.00, 45),
+('Électrocardiogramme', 'ECG 12 dérivations', 50.00, 10),
+('Analyses de sang', 'Bilan sanguin complet', 150.00, 5),
+('Analyse d\'urine', 'ECBU complet', 60.00, 5),
+('Fond d\'œil', 'Examen ophtalmologique', 100.00, 20),
+('Laser dermatologique', 'Traitement laser cutané', 200.00, 30);
 
 -- Insert Users with BCrypt hashed passwords
 -- Password for all users: 123456 (hashed with BCrypt)

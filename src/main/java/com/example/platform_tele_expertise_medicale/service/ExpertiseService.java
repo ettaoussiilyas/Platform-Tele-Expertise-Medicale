@@ -28,6 +28,24 @@ public class ExpertiseService {
     @Inject
     private CreneauDisponibleDAO creneauDAO;
     
+    public ExpertiseService() {
+        if (demandeExpertiseDAO == null) {
+            demandeExpertiseDAO = new DemandeExpertiseDAO();
+        }
+        if (utilisateurDAO == null) {
+            utilisateurDAO = new UtilisateurDAO();
+        }
+        if (specialiteDAO == null) {
+            specialiteDAO = new SpecialiteDAO();
+        }
+        if (consultationDAO == null) {
+            consultationDAO = new ConsultationDAO();
+        }
+        if (creneauDAO == null) {
+            creneauDAO = new CreneauDisponibleDAO();
+        }
+    }
+    
     public DemandeExpertise createDemandeExpertise(Long consultationId, Long specialisteId, String question, Priorite priorite) {
         
         Consultation consultation = consultationDAO.findById(consultationId);

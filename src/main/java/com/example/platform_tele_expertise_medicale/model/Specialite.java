@@ -15,7 +15,7 @@ public class Specialite {
     private Integer id;
 
     @NotBlank(message = "name must be not empty")
-    @Column(name = "specialite_name", nullable = false, unique = true, length = 100)
+    @Column(name = "nom", nullable = false, unique = true, length = 100)
     private String specialiteName;
 
     @OneToMany(mappedBy = "specialite")
@@ -39,6 +39,10 @@ public class Specialite {
     public String getSpecialiteName() {
         return specialiteName;
     }
+    
+    public String getNom() {
+        return specialiteName;
+    }
 
     public List<Utilisateur> getUtilisateurs() {
         return utilisateurs;
@@ -54,6 +58,10 @@ public class Specialite {
 
     public void setSpecialiteName(String specialiteName) {
         this.specialiteName = specialiteName;
+    }
+    
+    public void setNom(String nom) {
+        this.specialiteName = nom;
     }
 
     public void setUtilisateurs(List<Utilisateur> utilisateurs) {

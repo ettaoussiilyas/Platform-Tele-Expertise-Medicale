@@ -26,7 +26,17 @@ public class RoleDAO implements BaseDAO<Role, Integer> {
     
     @Override
     public void save(Role role) {
-        em.persist(role);
+        EntityManager entityManager = getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.persist(role);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override

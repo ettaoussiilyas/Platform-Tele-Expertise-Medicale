@@ -17,7 +17,11 @@ public class UtilisateurDAO implements BaseDAO<Utilisateur, Long> {
     
     private EntityManager getEntityManager() {
         if (em == null) {
-            return EntityManagerUtil.getEntityManager();
+            try {
+                return EntityManagerUtil.getEntityManager();
+            } catch (Exception e) {
+                throw new RuntimeException("Cannot create EntityManager. Check database connection and persistence.xml: " + e.getMessage(), e);
+            }
         }
         return em;
     }
@@ -39,12 +43,22 @@ public class UtilisateurDAO implements BaseDAO<Utilisateur, Long> {
     
     @Override
     public Utilisateur findById(Long id) {
-        return getEntityManager().find(Utilisateur.class, id);
+        EntityManager entityManager = getEntityManager();
+        try {
+            return entityManager.find(Utilisateur.class, id);
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override
     public List<Utilisateur> findAll() {
-        return getEntityManager().createQuery("SELECT u FROM Utilisateur u", Utilisateur.class).getResultList();
+        EntityManager entityManager = getEntityManager();
+        try {
+            return entityManager.createQuery("SELECT u FROM Utilisateur u", Utilisateur.class).getResultList();
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override

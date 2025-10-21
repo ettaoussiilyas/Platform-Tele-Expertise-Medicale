@@ -27,6 +27,18 @@ public class ConsultationService {
     
     private static final BigDecimal CONSULTATION_COST = new BigDecimal("150.00");
     
+    public ConsultationService() {
+        if (consultationDAO == null) {
+            consultationDAO = new ConsultationDAO();
+        }
+        if (patientDAO == null) {
+            patientDAO = new PatientDAO();
+        }
+        if (utilisateurDAO == null) {
+            utilisateurDAO = new UtilisateurDAO();
+        }
+    }
+    
     public Consultation createConsultation(Long patientId, Long medecinId, String notes) {
         Patient patient = patientDAO.findById(patientId);
         Utilisateur medecin = utilisateurDAO.findById(medecinId);
@@ -76,16 +88,17 @@ public class ConsultationService {
     }
     
     public BigDecimal calculateTotalCost(Long consultationId) {
-        Consultation consultation = consultationDAO.findById(consultationId);
+        Consultation consultation = consultationDAO.findByIdWithExpertises(consultationId);
         if (consultation == null) {
             return BigDecimal.ZERO;
         }
         
-        BigDecimal total = consultation.getTarif();
+        BigDecimal total = consultation.getTarif() != null ? consultation.getTarif() : BigDecimal.ZERO;
         
-        if (consultation.getDemandesExpertises() != null) {
+        if (consultation.getDemandesExpertises() != null && !consultation.getDemandesExpertises().isEmpty()) {
             BigDecimal specialistCost = consultation.getDemandesExpertises()
                     .stream()
+                    .filter(demande -> demande.getSpecialiste() != null && demande.getSpecialiste().getTarif() != null)
                     .map(demande -> demande.getSpecialiste().getTarif())
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
             total = total.add(specialistCost);

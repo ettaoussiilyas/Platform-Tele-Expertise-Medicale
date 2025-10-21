@@ -5,7 +5,7 @@ INSERT INTO roles (role_name) VALUES
 ('ADMIN');
 
 
-INSERT INTO specialites (specialite_name) VALUES
+INSERT INTO specialites (nom) VALUES
 ('CARDIOLOGIE'),
 ('PNEUMOLOGIE'),
 ('NEUROLOGIE'),

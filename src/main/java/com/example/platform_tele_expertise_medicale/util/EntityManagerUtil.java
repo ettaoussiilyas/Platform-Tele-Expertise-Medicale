@@ -11,11 +11,15 @@ public class EntityManagerUtil {
         try {
             emf = Persistence.createEntityManagerFactory("medicalPU");
         } catch (Exception e) {
+            System.err.println("Failed to create EntityManagerFactory: " + e.getMessage());
             e.printStackTrace();
         }
     }
     
     public static EntityManager getEntityManager() {
+        if (emf == null) {
+            throw new RuntimeException("EntityManagerFactory is null. Check persistence.xml configuration.");
+        }
         return emf.createEntityManager();
     }
     

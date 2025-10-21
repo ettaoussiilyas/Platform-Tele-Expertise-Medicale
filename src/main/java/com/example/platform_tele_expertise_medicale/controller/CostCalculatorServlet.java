@@ -92,7 +92,7 @@ public class CostCalculatorServlet extends HttpServlet {
                 totalCost = totalCost.add(actesCost);
             }
             
-            Consultation consultation = consultationDAO.findById(consultationId);
+            Consultation consultation = consultationDAO.findByIdWithExpertises(consultationId);
             
             request.setAttribute("consultation", consultation);
             request.setAttribute("totalCost", totalCost);

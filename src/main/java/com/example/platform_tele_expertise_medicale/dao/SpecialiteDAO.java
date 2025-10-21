@@ -13,38 +13,94 @@ public class SpecialiteDAO implements BaseDAO<Specialite, Integer> {
     @PersistenceContext(unitName = "medicalPU")
     private EntityManager em;
     
+    private EntityManager getEntityManager() {
+        if (em == null) {
+            try {
+                return com.example.platform_tele_expertise_medicale.util.EntityManagerUtil.getEntityManager();
+            } catch (Exception e) {
+                throw new RuntimeException("Cannot create EntityManager. Check database connection and persistence.xml: " + e.getMessage(), e);
+            }
+        }
+        return em;
+    }
+    
     @Override
     public void save(Specialite specialite) {
-        em.persist(specialite);
+        EntityManager entityManager = getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.persist(specialite);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override
     public Specialite findById(Integer id) {
-        return em.find(Specialite.class, id);
+        EntityManager entityManager = getEntityManager();
+        try {
+            return entityManager.find(Specialite.class, id);
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override
     public List<Specialite> findAll() {
-        return em.createQuery("SELECT s FROM Specialite s ORDER BY s.specialiteName", Specialite.class).getResultList();
+        EntityManager entityManager = getEntityManager();
+        try {
+            return entityManager.createQuery("SELECT s FROM Specialite s ORDER BY s.specialiteName", Specialite.class).getResultList();
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override
     public void update(Specialite specialite) {
-        em.merge(specialite);
+        EntityManager entityManager = getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.merge(specialite);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
     
     @Override
     public void delete(Integer id) {
-        Specialite specialite = findById(id);
-        if (specialite != null) {
-            em.remove(specialite);
+        EntityManager entityManager = getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            Specialite specialite = entityManager.find(Specialite.class, id);
+            if (specialite != null) {
+                entityManager.remove(specialite);
+            }
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        } finally {
+            if (em == null) entityManager.close();
         }
     }
     
     public Specialite findByName(String specialiteName) {
-        TypedQuery<Specialite> query = em.createQuery(
-            "SELECT s FROM Specialite s WHERE s.specialiteName = :name", Specialite.class);
-        query.setParameter("name", specialiteName);
-        return query.getResultStream().findFirst().orElse(null);
+        EntityManager entityManager = getEntityManager();
+        try {
+            TypedQuery<Specialite> query = entityManager.createQuery(
+                "SELECT s FROM Specialite s WHERE s.specialiteName = :name", Specialite.class);
+            query.setParameter("name", specialiteName);
+            return query.getResultStream().findFirst().orElse(null);
+        } finally {
+            if (em == null) entityManager.close();
+        }
     }
 }
